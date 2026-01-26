@@ -8,4 +8,5 @@ public interface UserService {
     UserDTO getUserByEmail(String email);
     UserDTO updateUser(Long id, User user);
     User getUserById(Long id); // For internal use (e.g., when adding rating)
+    boolean deleteUser(Long id);
 }

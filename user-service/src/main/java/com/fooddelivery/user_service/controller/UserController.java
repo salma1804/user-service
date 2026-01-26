@@ -7,6 +7,7 @@ import com.fooddelivery.user_service.model.User;
 import com.fooddelivery.user_service.service.RatingService;
 import com.fooddelivery.user_service.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,9 @@ import java.util.List;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-
+    @Autowired
     private final UserService userService;
+    @Autowired
     private final RatingService ratingService;
 
     // User registration
@@ -54,4 +56,15 @@ public class UserController {
         List<RatingDTO> ratings = ratingService.getRatingsByUser(userId);
         return ResponseEntity.ok(ratings);
     }
+    // Delete user by ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.deleteUser(id);
+        if (deleted) {
+            return ResponseEntity.ok().body("User deleted successfully");
+        } else {
+            return ResponseEntity.badRequest().body("User not found or could not be deleted");
+        }
+    }
+
 }

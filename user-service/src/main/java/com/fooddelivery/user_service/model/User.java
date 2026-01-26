@@ -26,5 +26,10 @@ public class User {
     private String fullName;
 
     @Column(nullable = false)
+    private String username;
+
+
+
+    @Column(nullable = false)
     private String role; // ROLE_USER, ROLE_ADMIN
 }
