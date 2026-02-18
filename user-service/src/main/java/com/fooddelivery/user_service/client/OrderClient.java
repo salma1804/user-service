@@ -4,21 +4,45 @@ import com.fooddelivery.user_service.dto.CartItemDTO;
 import com.fooddelivery.user_service.dto.OrderRequestDTO;
 import com.fooddelivery.user_service.dto.OrderResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "order-service")
+@FeignClient(name = "order-service") // Service name in Eureka or application.yml
 public interface OrderClient {
 
-    @PostMapping("/api/cart/add")
-    CartItemDTO addToCart(@RequestBody CartItemDTO cartItem);
-    @PostMapping("/api/orders")
-    OrderResponseDTO createOrder(@RequestBody OrderRequestDTO orderRequestDTO);
-    @GetMapping("/api/orders/user/{userId}")
-    List<OrderResponseDTO> getUserOrders(@PathVariable Long userId);
-}
+    // -------------------------
+    // CART METHODS
+    // -------------------------
 
+    @PostMapping("/api/cart/add")
+    CartItemDTO addToCart(@RequestBody CartItemDTO cartItem,
+                          @RequestParam("userId") Long userId);
+
+    @GetMapping("/api/cart/{userId}")
+    List<CartItemDTO> getCart(@PathVariable("userId") Long userId);
+
+    @DeleteMapping("/api/cart/{userId}")
+    void clearCart(@PathVariable("userId") Long userId);
+
+    // -------------------------
+    // ORDER METHODS
+    // -------------------------
+
+    @PostMapping("/orders")
+    OrderResponseDTO createOrder(@RequestBody OrderRequestDTO orderRequestDTO);
+
+    @GetMapping("/orders/{orderId}")
+    OrderResponseDTO getOrderById(@PathVariable("orderId") Long orderId);
+
+    @GetMapping("/orders/customer/{userId}")
+    List<OrderResponseDTO> getOrdersByCustomer(@PathVariable("userId") Long userId);
+
+    // -------------------------
+    // CREATE ORDER FROM CART
+    // -------------------------
+
+    @PostMapping("/orders/from-cart")
+    OrderResponseDTO createOrderFromCart(@RequestParam("userId") Long userId,
+                                         @RequestBody OrderRequestDTO orderRequestDTO);
+}

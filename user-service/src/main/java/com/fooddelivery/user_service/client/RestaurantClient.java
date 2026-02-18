@@ -11,12 +11,13 @@ import java.util.List;
 @FeignClient(name = "restaurant-service") // service name in Eureka or application.yml
 public interface RestaurantClient {
 
-    @GetMapping("/api/restaurants")
+    @GetMapping("/restaurants")
     List<RestaurantDTO> getAllRestaurants();
 
-    @GetMapping("/api/restaurants/{id}")
+    @GetMapping("/restaurants/{id}")
     RestaurantDTO getRestaurantById(@PathVariable("id") Long id);
-    @GetMapping("/api/restaurants/{restaurantId}/menu")
+
+    @GetMapping("/menu-items/restaurant/{restaurantId}")
     List<MenuDTO> getMenuByRestaurant(@PathVariable("restaurantId") Long restaurantId);
 }
 

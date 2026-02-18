@@ -1,6 +1,7 @@
 package com.fooddelivery.user_service.service;
 
 import com.fooddelivery.user_service.dto.RatingDTO;
+import com.fooddelivery.user_service.dto.UserDTO;
 import com.fooddelivery.user_service.model.Rating;
 import com.fooddelivery.user_service.model.User;
 import com.fooddelivery.user_service.repository.RatingRepository;
@@ -18,15 +19,23 @@ public class RatingServiceImpl implements RatingService {
     private final UserService userService;
 
     @Override
+
     public Rating addRatingFromDTO(RatingDTO dto) {
-        User user = userService.getUserById(dto.getUserId());
+        // Get UserDTO from service
+        UserDTO userDTO = userService.getUserById(dto.getUserId());
+
+        // Create a User entity with only the ID (for JPA)
+        User user = new User();
+        user.setId(userDTO.getId());
+
         Rating rating = new Rating();
-        rating.setUser(user);
+        rating.setUser(user); // set user entity with only ID
         rating.setRestaurantId(dto.getRestaurantId());
         rating.setDeliveryPersonId(dto.getDeliveryPersonId());
         rating.setScore(dto.getScore());
         rating.setComment(dto.getComment());
         rating.setType(dto.getType());
+
         return ratingRepository.save(rating);
     }
 

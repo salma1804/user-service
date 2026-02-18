@@ -1,6 +1,7 @@
 package com.fooddelivery.user_service.service;
 
 import com.fooddelivery.user_service.client.OrderClient;
+import com.fooddelivery.user_service.dto.CartItemDTO;
 import com.fooddelivery.user_service.dto.OrderRequestDTO;
 import com.fooddelivery.user_service.dto.OrderResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderResponseDTO> getUserOrderHistory(Long userId) {
-        return orderClient.getUserOrders(userId);
+        return orderClient.getOrdersByCustomer(userId);
+    }
+
+    @Override
+    public CartItemDTO addToCart(Long userId,CartItemDTO cartItem) {
+        return orderClient.addToCart( cartItem,userId);
     }
 }

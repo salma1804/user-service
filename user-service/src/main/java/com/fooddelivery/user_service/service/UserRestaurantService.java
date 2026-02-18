@@ -1,6 +1,7 @@
 package com.fooddelivery.user_service.service;
 
 import com.fooddelivery.user_service.client.RestaurantClient;
+import com.fooddelivery.user_service.dto.MenuDTO;
 import com.fooddelivery.user_service.dto.RestaurantDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,10 @@ public class UserRestaurantService {
 
     public RestaurantDTO getRestaurantById(Long id) {
         return restaurantClient.getRestaurantById(id);
+    }
+
+    public List<MenuDTO> getMenuByRestaurant(Long id) {
+        return restaurantClient.getMenuByRestaurant(id);
     }
 }
 

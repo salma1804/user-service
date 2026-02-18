@@ -12,4 +12,9 @@ public class UserDTO {
     private String fullName;
     private String role;
     private String username;
+    private Long id;
+
+
 }
+
+

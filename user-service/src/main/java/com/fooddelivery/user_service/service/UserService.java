@@ -7,6 +7,6 @@ public interface UserService {
     UserDTO registerUser(User user);
     UserDTO getUserByEmail(String email);
     UserDTO updateUser(Long id, User user);
-    User getUserById(Long id); // For internal use (e.g., when adding rating)
+    UserDTO getUserById(Long id); // For internal use (e.g., when adding rating)
     boolean deleteUser(Long id);
 }

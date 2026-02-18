@@ -24,15 +24,26 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
-        return new UserDTO(savedUser.getEmail(), savedUser.getFullName(), savedUser.getRole(),savedUser.getUsername());
+        return new UserDTO(savedUser.getEmail(), savedUser.getFullName(), savedUser.getRole(),savedUser.getUsername(),user.getId());
     }
+
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        User user= userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return new UserDTO(user.getEmail(), user.getFullName(), user.getRole(), user.getUsername(), user.getId());
+
+    }
+
+
 
     @Override
     public UserDTO getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        return new UserDTO(user.getEmail(), user.getFullName(), user.getRole(), user.getUsername());
+        return new UserDTO(user.getEmail(), user.getFullName(), user.getRole(), user.getUsername(), user.getId());
     }
 
     @Override
@@ -49,14 +60,10 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        return new UserDTO(user.getEmail(), user.getFullName(), user.getRole(), user.getUsername());
+        return new UserDTO(user.getEmail(), user.getFullName(), user.getRole(), user.getUsername(),user.getId());
     }
 
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-    }
+
     @Override
     @Transactional
     public boolean deleteUser(Long id) {

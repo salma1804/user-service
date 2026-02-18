@@ -1,5 +1,6 @@
 package com.fooddelivery.user_service.controller;
 
+import com.fooddelivery.user_service.dto.MenuDTO;
 import com.fooddelivery.user_service.dto.RestaurantDTO;
 import com.fooddelivery.user_service.service.UserRestaurantService;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,15 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDTO> getRestaurant(@PathVariable Long id) {
+    public ResponseEntity<RestaurantDTO> getRestaurantById(@PathVariable Long id) {
         RestaurantDTO restaurant = userRestaurantService.getRestaurantById(id);
         return ResponseEntity.ok(restaurant);
     }
+    @GetMapping("/{id}/menu")
+    public ResponseEntity<List<MenuDTO>> getMenuItemsByRestaurant(@PathVariable Long id) {
+        List<MenuDTO> menu = userRestaurantService.getMenuByRestaurant(id);
+        return ResponseEntity.ok(menu);
+    }
+
 }
 
