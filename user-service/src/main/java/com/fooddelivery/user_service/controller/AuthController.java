@@ -1,40 +1,30 @@
 package com.fooddelivery.user_service.controller;
 
 import com.fooddelivery.user_service.client.AdminAuthClient;
-//import com.fooddelivery.user_service.dto.ErrorResponse;
-//import com.fooddelivery.user_service.dto.LoginRequest;
-//import com.fooddelivery.user_service.dto.LoginResponse;
-//import com.fooddelivery.user_service.model.User;
-//import com.fooddelivery.user_service.repository.UserRepository;
-//import com.fooddelivery.user_service.util.JwtTokenProvider;
+import com.fooddelivery.user_service.dto.LoginResponse;
 import feign.FeignException;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private AdminAuthClient adminAuthClient;
+
+    private final AdminAuthClient adminAuthClient;
+
+    public AuthController(AdminAuthClient adminAuthClient) {
+        this.adminAuthClient = adminAuthClient;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AdminAuthClient.LoginRequest loginRequest) {
         try {
-            AdminAuthClient.LoginResponse response = adminAuthClient.login(loginRequest);
-            return ResponseEntity.ok(response);  // forward JWT to user client
+            LoginResponse response = adminAuthClient.login(loginRequest);
+            return ResponseEntity.ok(response);
         } catch (FeignException e) {
             return ResponseEntity.status(e.status()).body(e.getMessage());
         }
     }
-
-
 }
 //@Autowired
 //private JwtTokenProvider tokenProvider;

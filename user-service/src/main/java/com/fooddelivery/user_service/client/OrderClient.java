@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "order-service") // Service name in Eureka or application.yml
+@FeignClient(
+        name = "order-service",
+        url = "http://localhost:8085",
+        configuration = com.fooddelivery.user_service.config.FeignClientConfig.class
+)
 public interface OrderClient {
 
     // -------------------------
